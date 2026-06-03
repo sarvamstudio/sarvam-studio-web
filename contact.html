@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Sarvam Digital Studio</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="contact.css">
+</head>
+<body>
+
+    <!-- AMBIENT BACKGROUND GLOWS (Animated) -->
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <div class="nav-logo">
+                <img src="sarvam-logo.jpeg" alt="Sarvam Logo">
+                <div class="logo-text">
+                    <span class="brand-name">SARVAM</span>
+                    <span class="brand-sub">DIGITAL STUDIO</span>
+                </div>
+            </div>
+
+            <!-- PREMIUM MENU ICON -->
+            <div class="menu-toggle" id="menuToggle">
+                <i data-lucide="menu"></i>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="gallery.html" >Gallery</a></li>
+                <li><a href="reviews.html">Reviews</a></li>
+                <li><a href="contact.html" class="nav-btn">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="contact-hero reveal">
+        <div class="container text-center">
+            <span class="badge"><i data-lucide="sparkles" class="badge-icon"></i> Let's Connect</span>
+            <h1>Create Magic <span class="text-gradient">Together</span></h1>
+            <p>From grand weddings to intimate portraits, we are here to turn your vision into cinematic reality.</p>
+        </div>
+    </header>
+
+    <!-- CONTACT CONTAINER (Bento Box + Form) -->
+    <section class="contact-container container">
+        
+        <!-- LEFT: BENTO BOX INFO GRID -->
+        <div class="contact-info">
+            <div class="bento-grid">
+                
+                <!-- Bento Item: Phone -->
+                <div class="bento-card reveal">
+                    <div class="icon-circle"><i data-lucide="phone"></i></div>
+                    <h3>Call Us</h3>
+                    <p><a href="tel:+919925417991">+91 99254 17991</a></p>
+                </div>
+
+                <!-- Bento Item: Email -->
+                <div class="bento-card reveal" style="transition-delay: 0.1s;">
+                    <div class="icon-circle"><i data-lucide="mail"></i></div>
+                    <h3>Email</h3>
+                    <p><a href="mailto:sarvamstudio@gmail.com">sarvamstudio@gmail.com</a></p>
+                </div>
+
+                <!-- Bento Item: Address (Spans Full Width) -->
+                <div class="bento-card full-span reveal" style="transition-delay: 0.2s;">
+                    <div class="bento-flex">
+                        <div class="icon-circle"><i data-lucide="map-pin"></i></div>
+                        <div class="bento-text">
+                            <h3>Studio Address</h3>
+                            <p>Ambika Nagar Society, Plot No 15, Udhana, Surat – 394210</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bento Item: Hours (Spans Full Width) -->
+                <div class="bento-card full-span reveal" style="transition-delay: 0.3s;">
+                    <div class="bento-flex">
+                        <div class="icon-circle"><i data-lucide="clock"></i></div>
+                        <div class="bento-text">
+                            <h3>Business Hours</h3>
+                            <p>Monday – Sunday : 9:00 AM – 8:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- DIRECT ACTION BUTTONS -->
+            <div class="quick-actions reveal" style="transition-delay: 0.4s;">
+                <a href="https://wa.me/919925417991" target="_blank" class="action-btn whatsapp-btn">
+                    <i data-lucide="message-circle"></i> WhatsApp Us
+                </a>
+                <a href="tel:+919925417991" class="action-btn call-btn">
+                    <i data-lucide="phone-call"></i> Direct Call
+                </a>
+            </div>
+        </div>
+
+        <!-- RIGHT: ULTRA PREMIUM CONTACT FORM -->
+        <div class="contact-form-wrapper reveal" style="transition-delay: 0.2s;">
+            <div class="form-glass-card">
+                <h2>Send an Enquiry</h2>
+                <p class="form-subtitle">Fill in the details below. We'll instantly receive it on WhatsApp and reply promptly.</p>
+                
+                <form id="contactForm">
+                    <div class="input-container">
+                        <i data-lucide="user" class="input-icon"></i>
+                        <input type="text" id="name" placeholder="Your Full Name" required>
+                        <span class="focus-border"></span>
+                    </div>
+
+                    <div class="input-container">
+                        <i data-lucide="smartphone" class="input-icon"></i>
+                        <input type="tel" id="phone" placeholder="Mobile Number" required>
+                        <span class="focus-border"></span>
+                    </div>
+
+                    <div class="input-container">
+                        <i data-lucide="camera" class="input-icon"></i>
+                        <select id="service" required>
+                            <option value="" disabled selected>Select a Service</option>
+                            <option value="Wedding Photography">Wedding Photography</option>
+                            <option value="Baby Photography">Baby Photography</option>
+                            <option value="Pre-Wedding Shoot">Pre-Wedding Shoot</option>
+                            <option value="Event Coverage">Event Coverage</option>
+                            <option value="Passport Photos">Passport / Visa Photos</option>
+                        </select>
+                        <span class="focus-border"></span>
+                    </div>
+
+                    <div class="input-container">
+                        <textarea id="message" placeholder="Tell us about your event or requirement..." required></textarea>
+                        <span class="focus-border"></span>
+                    </div>
+
+                    <button type="submit" class="btn-submit shine-effect">
+                        <span>Send via WhatsApp</span>
+                        <i data-lucide="send"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- MAP SECTION -->
+    <section class="map-section container reveal">
+        <div class="map-glass-wrapper">
+            <div class="map-header">
+                <h3><i data-lucide="navigation"></i> Find Us on the Map</h3>
+            </div>
+            <iframe 
+                src="https://www.google.com/maps?q=Sarvam%20Digital%20Studio%20Surat&output=embed" 
+                loading="lazy" 
+                allowfullscreen>
+            </iframe>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>SARVAM DIGITAL STUDIO</h3>
+                    <p>Capturing the essence of your most beautiful moments.</p>
+                </div>
+                <div class="footer-contact">
+                    <p>📍 Surat, India</p>
+                    <p>📞 +91 99254 17991</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Sarvam Digital Studio. Crafted for Excellence.Owned by Kiran Makwane.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="contact.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    // Animation ko start karne ka code
+    AOS.init({
+        duration: 800, // Animation kitni der chalega (800ms)
+        once: true, // Scroll karne par ek hi baar animate hoga
+        offset: 100 // Thoda pehle hi animation shuru ho jayega
+    });
+</script>
+<script src="app-router.js"></script>
+</body>
+</html>

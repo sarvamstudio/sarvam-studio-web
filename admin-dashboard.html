@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { background: #050505; color: #fff; font-family: 'Poppins', sans-serif; margin: 0; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 20px; margin-bottom: 30px; }
+        .btn-logout { background: #ff4d4d; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .card { background: #111; padding: 30px; border-radius: 15px; border: 1px solid #333; margin-bottom: 30px; }
+        input, select { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #444; background: #222; color: #fff; box-sizing: border-box; }
+        button.submit-btn { background: #C8A951; color: #000; border: none; padding: 15px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .gallery-preview { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+        .img-card { background: #222; padding: 10px; border-radius: 10px; text-align: center; border: 1px solid #333; }
+        .img-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 5px; margin-bottom: 10px; }
+        .btn-delete { background: #ff4d4d; color: white; border: none; padding: 8px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: 500; transition: 0.3s;}
+        .btn-delete:hover { background: #cc0000; }
+        .helper-text { font-size: 12px; color: #C8A951; margin-top: -10px; margin-bottom: 15px; display: block; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>Sarvam Studio Admin</h2>
+        <button class="btn-logout" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="card">
+        <h3>Upload New Photos</h3>
+        <form id="uploadForm">
+            <select id="category" required>
+                <option value="wedding">Wedding</option>
+                <option value="baby">Baby Shoot</option>
+                <option value="pre-wedding">Pre-Wedding</option>
+                <option value="indoor">Indoor-photographs</option>
+            </select>
+            
+            <input type="file" id="imageFile" accept="image/*" multiple required>
+            <span class="helper-text">* Aap ek saath multiple (50 tak) photos select kar sakte hain. (Ctrl daba kar click karein)</span>
+            
+            <button type="submit" class="submit-btn" id="uploadBtn">Upload to Godown</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>Manage Godown Photos</h3>
+        <select id="filterCategory" onchange="loadPhotos()">
+            <option value="wedding">Wedding</option>
+            <option value="baby">Baby Shoot</option>
+            <option value="pre-wedding">Pre-Wedding</option>
+            <option value="indoor-photographs">Indoor-photographs</option>
+        </select>
+        <div class="gallery-preview" id="adminGallery"></div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('adminToken');
+        if (!token) window.location.href = 'admin-login.html';
+
+        function logout() {
+            localStorage.removeItem('adminToken');
+            window.location.href = 'admin-login.html';
+        }
+
+        // Multiple Photo Upload Handle
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('uploadBtn');
+            const files = document.getElementById('imageFile').files; // Saari selected files
+            
+            btn.innerText = `Uploading ${files.length} Photos... Please Wait`;
+            btn.style.opacity = '0.7';
+            btn.disabled = true;
+
+            const formData = new FormData();
+            formData.append('category', document.getElementById('category').value);
+            
+            // Loop chala kar saari photos ko form mein daal do
+            for (let i = 0; i < files.length; i++) {
+                formData.append('photos', files[i]); // 'photos' naam piche backend me bhi hai
+            }
+
+            try {
+                const res = await fetch('http://localhost:5000/api/photos/upload', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData
+                });
+                
+                if (res.ok) {
+                    alert(`${files.length} Photos successfully studio database mein chali gayi! 🎉`);
+                    document.getElementById('uploadForm').reset();
+                    document.getElementById('filterCategory').value = document.getElementById('category').value;
+                    loadPhotos(); // Refresh gallery
+                } else {
+                    const data = await res.json();
+                    alert(data.error || "Upload failed");
+                }
+            } catch (err) {
+                alert("Server error during upload. Kya backend chalu hai?");
+            }
+            
+            // Button wapas theek kar do
+            btn.innerText = "Upload to Godown";
+            btn.style.opacity = '1';
+            btn.disabled = false;
+        });
+
+        // Fetch and Display Photos
+        async function loadPhotos() {
+            const category = document.getElementById('filterCategory').value;
+            const gallery = document.getElementById('adminGallery');
+            gallery.innerHTML = '<p style="color:#C8A951;">Database se check kar raha hu...</p>';
+
+            try {
+                const res = await fetch(`http://localhost:5000/api/photos/category/${category}`);
+                const photos = await res.json();
+                
+                gallery.innerHTML = '';
+                
+                if(photos.length === 0) {
+                    gallery.innerHTML = '<p style="color:#888;">Is category mein abhi koi photo upload nahi hui hai.</p>';
+                    return;
+                }
+
+                // Latest photo pehle dikhe isliye reverse() laga diya
+                photos.reverse().forEach(photo => {
+                    gallery.innerHTML += `
+                        <div class="img-card">
+                            <img src="http://localhost:5000/${photo.imagePath}" alt="Studio Photo">
+                            <button class="btn-delete" onclick="deletePhoto('${photo._id}')">Delete Photo</button>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                gallery.innerHTML = '<p style="color:red;">Error loading photos. Server check karo.</p>';
+            }
+        }
+
+        // Delete Photo
+        async function deletePhoto(id) {
+            if(!confirm("Kya aap sach mein is photo ko permanently delete karna chahte hain?")) return;
+            try {
+                const res = await fetch(`http://localhost:5000/api/photos/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    loadPhotos();
+                } else {
+                    alert("Delete fail ho gaya. Code check karo.");
+                }
+            } catch (err) {
+                alert("Error deleting photo");
+            }
+        }
+
+        loadPhotos();
+    </script>
+</body>
+</html>

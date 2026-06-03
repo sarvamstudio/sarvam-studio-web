@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Sarvam Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            background: #030303; 
+            color: #ffffff; 
+            font-family: 'Poppins', sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+        }
+        .login-box { 
+            background: rgba(20, 20, 20, 0.8); 
+            backdrop-filter: blur(15px);
+            padding: 40px; 
+            border-radius: 20px; 
+            border: 1px solid rgba(200, 169, 81, 0.3); 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5); 
+            width: 100%; 
+            max-width: 380px; 
+            text-align: center; 
+        }
+        h2 { 
+            color: #C8A951; 
+            margin-bottom: 5px; 
+            font-size: 1.8rem;
+        }
+        p {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+        input { 
+            width: 100%; 
+            padding: 15px; 
+            margin-bottom: 20px; 
+            border-radius: 10px; 
+            border: 1px solid rgba(255,255,255,0.08); 
+            background: rgba(255, 255, 255, 0.03); 
+            color: #fff; 
+            box-sizing: border-box; 
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+        }
+        input:focus {
+            border: 1px solid #C8A951;
+            background: rgba(255,255,255,0.05);
+        }
+        button { 
+            width: 100%; 
+            padding: 15px; 
+            background: linear-gradient(45deg, #C8A951, #f3d88f); 
+            border: none; 
+            border-radius: 10px; 
+            color: #000; 
+            font-weight: 600; 
+            font-size: 1rem;
+            cursor: pointer; 
+            transition: 0.3s; 
+        }
+        button:hover { 
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(200, 169, 81, 0.3);
+        }
+        .error { 
+            color: #ff4d4d; 
+            font-size: 0.85rem;
+            margin-bottom: 15px; 
+            display: none; 
+            background: rgba(255, 77, 77, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>Sarvam Studio</h2>
+        <p>Admin Portal Login</p>
+        <div id="errorMsg" class="error"></div>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Admin Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit" id="loginBtn">Login to Dashboard</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault(); // Page refresh hone se rokta hai
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+            const loginBtn = document.getElementById('loginBtn');
+
+            loginBtn.innerText = "Checking...";
+            errorMsg.style.display = 'none';
+
+            try {
+                // Backend API ko login request bhej rahe hain
+                const response = await fetch('http://localhost:5000/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Agar login successful hua, toh token ko browser mein save karo
+                    localStorage.setItem('adminToken', data.token);
+                    loginBtn.innerText = "Success! Redirecting...";
+                    
+                    // Dashboard par bhej do
+                    setTimeout(() => {
+                        window.location.href = 'admin-dashboard.html';
+                    }, 1000);
+                } else {
+                    // Agar password galat hai
+                    errorMsg.innerText = data.error;
+                    errorMsg.style.display = 'block';
+                    loginBtn.innerText = "Login to Dashboard";
+                }
+            } catch (err) {
+                errorMsg.innerText = "Server Error. Kya backend chalu hai?";
+                errorMsg.style.display = 'block';
+                loginBtn.innerText = "Login to Dashboard";
+            }
+        });
+    </script>
+</body>
+</html>

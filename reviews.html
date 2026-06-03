@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Reviews | Sarvam Digital Studio</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="reviews.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-content">
+            <div class="nav-logo">
+                <img src="sarvam-logo.jpeg" alt="Sarvam Logo">
+                <div class="logo-text">
+                    <span class="brand-name">SARVAM</span>
+                    <span class="brand-sub">DIGITAL STUDIO</span>
+                </div>
+            </div>
+
+            <div class="menu-toggle" id="menuToggle">
+                <i data-lucide="menu"></i>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="gallery.html" >Gallery</a></li>
+                <li><a href="reviews.html" class="active">Reviews</a></li>
+                <li><a href="contact.html" class="nav-btn">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="reviews-hero reveal">
+        <div class="hero-bg-glow"></div>
+        <div class="container text-center">
+            <span class="badge">Client Love</span>
+            <h1>Voices of <span class="text-gradient">Satisfaction</span></h1>
+            <p>Don't just take our word for it. Read what our beautiful clients have to say about their experience with Sarvam Studio.</p>
+        </div>
+    </header>
+
+    <main class="reviews-wrapper container">
+        
+        <div class="review-form-container reveal">
+            <div class="form-glass-card">
+                <h2>Share Your Experience</h2>
+                <p class="form-subtitle">Your feedback helps us capture better memories.</p>
+                
+                <form id="reviewForm">
+                    <div class="input-group">
+                        <i data-lucide="user"></i>
+                        <input type="text" id="name" placeholder="Your Full Name" required />
+                    </div>
+
+                    <div class="input-group">
+                        <i data-lucide="phone"></i>
+                        <input type="tel" id="mobile" placeholder="Your Mobile Number" required />
+                    </div>
+
+                    <div class="input-group">
+                        <textarea id="reviewText" placeholder="Write your review here..." required></textarea>
+                    </div>
+
+                    <div class="rating-section">
+                        <p>Rate your experience</p>
+                        <div class="star-rating">
+                            <span data-value="1">★</span>
+                            <span data-value="2">★</span>
+                            <span data-value="3">★</span>
+                            <span data-value="4">★</span>
+                            <span data-value="5">★</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Submit Review</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="reviews-list-container">
+            <div class="list-header reveal">
+                <h2>Recent Stories</h2>
+                <div class="line"></div>
+            </div>
+            
+            <div id="reviewsContainer" class="reviews-grid">
+                <div class="loading-text">Loading reviews...</div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>SARVAM DIGITAL STUDIO</h3>
+                    <p>Professional photography for all occasions.</p>
+                </div>
+                <div class="footer-contact">
+                    <p>📍 Surat, India</p>
+                    <p>📞 +91 99254 17991</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Sarvam Digital Studio. Crafted for Excellence. Owned by Kiran Makwane.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="reviews.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Animation ko start karne ka code
+        AOS.init({
+            duration: 800, // Animation kitni der chalega (800ms)
+            once: true, // Scroll karne par ek hi baar animate hoga
+            offset: 100 // Thoda pehle hi animation shuru ho jayega
+        });
+    </script>
+    <script src="app-router.js"></script>
+</body>
+</html>

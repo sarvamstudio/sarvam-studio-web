@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Sarvam Digital Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="gallery.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-content">
+            <div class="nav-logo">
+                <img src="sarvam-logo.jpeg" alt="Sarvam Logo">
+                <div class="logo-text">
+                    <span class="brand-name">SARVAM</span>
+                    <span class="brand-sub">DIGITAL STUDIO</span>
+                </div>
+            </div>
+            <div class="menu-toggle" id="menuToggle">
+                <i data-lucide="menu"></i>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="gallery.html"class="active">Gallery</a></li>
+                <li><a href="reviews.html">Reviews</a></li>
+                <li><a href="contact.html" class="nav-btn">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="portfolio-hero reveal">
+        <div class="hero-bg-glow"></div>
+        <div class="container text-center">
+            <span class="badge">Our Masterpieces</span>
+            <h1>A Gallery of <span class="text-gradient">Memories</span></h1>
+            <p>Explore our curated collection of weddings, portraits, and events. Every frame tells a unique story.</p>
+        </div>
+    </header>
+
+    <section class="portfolio-section container">
+        
+        <div class="filter-container reveal">
+            <button class="filter-btn active" data-filter="all">All Work</button>
+            <button class="filter-btn" data-filter="wedding">Weddings</button>
+            <button class="filter-btn" data-filter="pre-wedding">Pre-Wedding</button>
+            <button class="filter-btn" data-filter="baby">Baby Shoots</button>
+            <button class="filter-btn" data-filter="indoor">Indoor-photographs</button>
+        </div>
+
+        <div class="gallery" id="gallery">
+            <h3 style="color:var(--primary); text-align:center; grid-column: 1 / -1; padding: 50px;">Fetching from Studio Server...</h3>
+        </div>
+
+    </section>
+
+    <section class="cta reveal">
+        <div class="container">
+            <h2>Let’s Capture Your Special Moments</h2>
+            <p>Your story deserves to be told beautifully. Let's create magic together.</p>
+            <a href="contact.html" class="btn btn-dark">Book Your Shoot</a>
+        </div>
+    </section>
+
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <span class="close-lightbox" id="closeLightbox"><i data-lucide="x"></i></span>
+            <img id="lightbox-img" loading="lazy" alt="Enlarged Image">
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>SARVAM DIGITAL STUDIO</h3>
+                    <p>Professional photography for all occasions.</p>
+                </div>
+                <div class="footer-contact">
+                    <p>📍 Surat, India</p>
+                    <p>📞 +91 99254 17991</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Sarvam Digital Studio. Crafted for Excellence. Owned by Kiran Makwane.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="gallery.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    // Animation ko start karne ka code
+    AOS.init({
+        duration: 800, // Animation kitni der chalega (800ms)
+        once: true, // Scroll karne par ek hi baar animate hoga
+        offset: 100 // Thoda pehle hi animation shuru ho jayega
+    });
+</script>
+<script src="app-router.js"></script>
+</body>
+</html>
