@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 recentPhotos.forEach((photo, index) => {
                     const slideHTML = `
                         <div class="slide ${index === 0 ? 'active' : ''}" style="transition: opacity 2s ease-in-out;">
-                            <img src="http://localhost:5000/${photo.imagePath}" alt="${photo.title}">
+                            <img src="${photo.imagePath}" alt="${photo.title || 'Studio Event'}">
                             <div class="slide-caption">${photo.category}</div>
                         </div>
                     `;
