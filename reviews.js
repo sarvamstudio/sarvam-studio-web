@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Backend ko data bhej rahe hain
-            const response = await fetch('https://sarvam-backend-5bhj.onrender.com', {
+            const response = await fetch('https://sarvam-backend-5bhj.onrender.com/api/reviews', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         reviewsContainer.innerHTML = "<p class='loading-text'>Loading reviews...</p>";
 
         try {
-            const response = await fetch('http://localhost:5000/api/reviews');
+            const response = await fetch('https://sarvam-backend-5bhj.onrender.com/api/reviews');
             const data = await response.json();
 
             reviewsContainer.innerHTML = ""; // Clear loading state

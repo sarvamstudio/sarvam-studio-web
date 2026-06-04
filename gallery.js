@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadGallery() {
         const gallery = document.getElementById('gallery');
         try {
-            const response = await fetch('http://localhost:5000/api/photos');
+            const response = await fetch('https://sarvam-backend-5bhj.onrender.com/api/photos');
             const data = await response.json();
             const photos = Array.isArray(data) ? data : data.photos;
 
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     const itemHTML = `
                     <div class="gallery-item ${filterClass} reveal visible" style="animation-delay: ${index * 0.05}s">
-                        <img src="http://localhost:5000/${photo.imagePath}" alt="${photo.title}" loading="lazy">
+                        <img src="https://sarvam-backend-5bhj.onrender.com/${photo.imagePath}" alt="${photo.title}" loading="lazy">
                         <div class="overlay">
                             <i data-lucide="maximize-2" class="zoom-icon"></i>
                             <div class="overlay-text">
