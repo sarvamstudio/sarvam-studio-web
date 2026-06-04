@@ -50,7 +50,7 @@ app.post('/api/auth/login', (req, res) => {
     const { username, password } = req.body;
     
     // Apna secret admin id aur password (Akshar@123)
-    if (username === 'Kiran' && password === 'Kiran@1980') {
+    if (username === 'admin' && password === 'Akshar@123') {
         const token = jwt.sign({ admin: true }, process.env.JWT_SECRET, { expiresIn: '1d' });
         res.json({ message: 'Login successful', token });
     } else {
