@@ -70,6 +70,10 @@ app.post('/api/photos/upload', upload.array('photos', 50), async (req, res) => {
 
         const category = req.body.category;
         const uploadedPhotos = [];
+        const upload = multer({ 
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 20 * 1024 * 1024 } // 20MB limit
+})
 
         for (const file of req.files) {
             const b64 = Buffer.from(file.buffer).toString("base64");
