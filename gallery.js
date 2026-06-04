@@ -89,7 +89,30 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
+    async function loadGallery(category) {
+        const container = document.getElementById('galleryContainer');
+        container.innerHTML = "Loading..."; // Taaki user ko pata chale kuch ho raha hai
 
+        try {
+            const res = await fetch(`https://sarvam-backend-5bhj.onrender.com/api/photos/category/${category}`);
+            const photos = await res.json();
+            
+            if (photos.length === 0) {
+                container.innerHTML = "No Photos Found";
+            } else {
+                container.innerHTML = ""; // Purana "Loading" hata do
+                photos.forEach(photo => {
+                    const img = document.createElement('img');
+                    img.src = photo.imagePath; // Cloudinary ka link
+                    img.style.width = "300px";
+                    img.style.margin = "10px";
+                    container.appendChild(img);
+                });
+            }
+        } catch (err) {
+            container.innerHTML = "Server se connect nahi ho paya.";
+        }
+    }
     // 4. LIGHTBOX LOGIC
     function setupLightbox() {
         const lightbox = document.getElementById('lightbox');
