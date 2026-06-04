@@ -10,31 +10,49 @@ const multer = require('multer');
 
 const app = express();
 
-// 1. CORS Middleware (Frontend block na ho)
+// ==========================================
+// 1. MIDDLEWARES
+// ==========================================
+// CORS Middleware (Frontend block na ho)
 app.use(cors());
 
-// 2. Body Parser (Data read karne ke liye)
+// Body Parser (Data read karne ke liye)
 app.use(express.json());
 
-// 3. Static Folder (Purani local photos browser mein dikhane ke liye)
+// Static Folder (Purani local photos browser mein dikhane ke liye)
 app.use('/uploads', express.static('uploads'));
 
-// 4. Database Connection
+
+// ==========================================
+// 2. DATABASE CONNECTION (MongoDB)
+// ==========================================
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ Studio ka Database Connect ho gaya!'))
   .catch((err) => console.log('❌ Database Connection Failed:', err));
 
-// 5. Cloudinary Configuration
+
+// ==========================================
+// 3. CLOUDINARY CONFIGURATION
+// ==========================================
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// 6. Multer Configuration (Photo ko temporarily memory mein rakhne ke liye)
-const upload = multer({ storage: multer.memoryStorage() });
 
-// --- DATABASE MODEL (Godown ka Structure) ---
+// ==========================================
+// 4. MULTER CONFIGURATION (20MB LIMIT SET)
+// ==========================================
+const upload = multer({ 
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 20 * 1024 * 1024 } // 20MB limit for high-res photos
+});
+
+
+// ==========================================
+// 5. DATABASE MODEL (Godown ka Structure)
+// ==========================================
 const photoSchema = new mongoose.Schema({
     category: String,
     imagePath: String, // Yahan ab Cloudinary ka link aayega
@@ -43,13 +61,16 @@ const photoSchema = new mongoose.Schema({
 });
 const Photo = mongoose.model('Photo', photoSchema);
 
-// --- APIs (ROUTES) ---
 
-// API 1: ADMIN LOGIN
+// ==========================================
+// 6. APIs (ROUTES)
+// ==========================================
+
+// --- API 1: ADMIN LOGIN ---
 app.post('/api/auth/login', (req, res) => {
     const { username, password } = req.body;
     
-    // Apna secret admin id aur password (Akshar@123)
+    // Apna secret admin id aur password (Akshar@123 ki jagah Kiran)
     if (username === 'Kiran' && password === 'Kiran@1980') {
         const token = jwt.sign({ admin: true }, process.env.JWT_SECRET, { expiresIn: '1d' });
         res.json({ message: 'Login successful', token });
@@ -58,7 +79,7 @@ app.post('/api/auth/login', (req, res) => {
     }
 });
 
-// API 2: UPLOAD PHOTOS TO CLOUDINARY
+// --- API 2: UPLOAD PHOTOS TO CLOUDINARY ---
 app.post('/api/photos/upload', upload.array('photos', 50), async (req, res) => {
     try {
         const authHeader = req.headers.authorization;
@@ -70,10 +91,10 @@ app.post('/api/photos/upload', upload.array('photos', 50), async (req, res) => {
 
         const category = req.body.category;
         const uploadedPhotos = [];
-        const upload = multer({ 
-    storage: multer.memoryStorage(),
-    limits: { fileSize: 20 * 1024 * 1024 } // 20MB limit
-})
+
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).json({ error: 'Koi photo select nahi ki gayi!' });
+        }
 
         for (const file of req.files) {
             const b64 = Buffer.from(file.buffer).toString("base64");
@@ -92,24 +113,35 @@ app.post('/api/photos/upload', upload.array('photos', 50), async (req, res) => {
             uploadedPhotos.push(newPhoto);
         }
 
-        res.json({ message: 'Photos successfully uploaded!', data: uploadedPhotos });
+        res.json({ message: 'Photos successfully studio database mein chali gayi! 🎉', data: uploadedPhotos });
     } catch (error) {
         console.error("Upload Error:", error);
         res.status(500).json({ error: 'Upload fail ho gaya. Backend logs check karo.' });
     }
 });
 
-// API 3: GET PHOTOS FOR WEBSITE
+// --- API 3: GET ALL PHOTOS FOR WEBSITE GALLERY ---
+app.get('/api/photos', async (req, res) => {
+    try {
+        const photos = await Photo.find({}); // Saari photos nikalo
+        res.json(photos);
+    } catch (error) {
+        console.error("Fetch All Error:", error);
+        res.status(500).json({ error: 'Photos fetch nahi ho payi' });
+    }
+});
+
+// --- API 4: GET PHOTOS BY CATEGORY ---
 app.get('/api/photos/category/:category', async (req, res) => {
     try {
         const photos = await Photo.find({ category: req.params.category });
         res.json(photos);
     } catch (error) {
-        res.status(500).json({ error: 'Photos fetch nahi ho payi' });
+        res.status(500).json({ error: 'Category photos fetch nahi ho payi' });
     }
 });
 
-// API 4: DELETE PHOTO
+// --- API 5: DELETE PHOTO ---
 app.delete('/api/photos/:id', async (req, res) => {
     try {
         const authHeader = req.headers.authorization;
@@ -135,10 +167,12 @@ app.delete('/api/photos/:id', async (req, res) => {
     }
 });
 
-// 7. Purani Reviews wali API (Agar iski alag file tumhare paas hai toh)
+// --- 7. Purani Reviews wali API ---
 app.use('/api/reviews', require('./routes/reviews')); 
 
-// 8. Server Start
+// ==========================================
+// 8. SERVER START
+// ==========================================
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`🚀 Server chal pada hai port ${PORT} par`);
