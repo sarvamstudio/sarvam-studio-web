@@ -13,7 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadGallery() {
         const gallery = document.getElementById('gallery');
         try {
-            const response = await fetch('https://sarvam-backend-5bhj.onrender.com/api/photos/category/${category}');
+            // FIX 1: category ki jagah saari photos ek saath bula rahe hain
+            const response = await fetch('https://sarvam-backend-5bhj.onrender.com/api/photos');
             const data = await response.json();
             const photos = Array.isArray(data) ? data : data.photos;
 
@@ -22,16 +23,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (photos && photos.length > 0) {
                 photos.reverse().forEach((photo, index) => {
                     // Category name ko lowercase karke class name banayenge (e.g. "Pre-Wedding" -> "pre-wedding")
-                    let filterClass = photo.category.toLowerCase().replace(/\s+/g, '-');
+                    let filterClass = photo.category ? photo.category.toLowerCase().replace(/\s+/g, '-') : 'all';
                     
+                    // FIX 2: photo.imagePath Cloudinary ka direct link hai, usko akele use karna hai
                     const itemHTML = `
                     <div class="gallery-item ${filterClass} reveal visible" style="animation-delay: ${index * 0.05}s">
-                        <img src="https://sarvam-backend-5bhj.onrender.com/${photo.imagePath}" alt="${photo.title}" loading="lazy">
+                        <img src="${photo.imagePath}" alt="${photo.title || 'Studio Shot'}" loading="lazy">
                         <div class="overlay">
                             <i data-lucide="maximize-2" class="zoom-icon"></i>
                             <div class="overlay-text">
                                 <h3>${photo.title || 'Studio Shot'}</h3>
-                                <p>${photo.category}</p>
+                                <p>${photo.category || 'Portfolio'}</p>
                             </div>
                         </div>
                     </div>`;
@@ -78,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Redirect hoke aaye filters ke liye (e.g., Services page se "View Gallery" click kiya ho)
+    // Redirect hoke aaye filters ke liye
     function checkURLFilter() {
         const params = new URLSearchParams(window.location.search);
         const category = params.get('filter');
@@ -89,30 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    async function loadGallery(category) {
-        const container = document.getElementById('galleryContainer');
-        container.innerHTML = "Loading..."; // Taaki user ko pata chale kuch ho raha hai
 
-        try {
-            const res = await fetch(`https://sarvam-backend-5bhj.onrender.com/api/photos/category/${category}`);
-            const photos = await res.json();
-            
-            if (photos.length === 0) {
-                container.innerHTML = "No Photos Found";
-            } else {
-                container.innerHTML = ""; // Purana "Loading" hata do
-                photos.forEach(photo => {
-                    const img = document.createElement('img');
-                    img.src = photo.imagePath; // Cloudinary ka link
-                    img.style.width = "300px";
-                    img.style.margin = "10px";
-                    container.appendChild(img);
-                });
-            }
-        } catch (err) {
-            container.innerHTML = "Server se connect nahi ho paya.";
-        }
-    }
     // 4. LIGHTBOX LOGIC
     function setupLightbox() {
         const lightbox = document.getElementById('lightbox');
@@ -148,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. SCROLL REVEAL (for static elements)
+    // 5. SCROLL REVEAL
     const reveals = document.querySelectorAll('.reveal');
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -159,6 +138,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.1 });
     reveals.forEach(el => revealObserver.observe(el));
 
-    // Page start
+    // Page start hote hi saari photos le aao
     loadGallery();
 });
