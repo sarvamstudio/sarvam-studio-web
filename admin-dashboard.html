@@ -142,17 +142,24 @@
         async function deletePhoto(id) {
             if(!confirm("Kya aap sach mein is photo ko permanently delete karna chahte hain?")) return;
             try {
-                const res = await fetch(`http://localhost:5000/api/photos/${id}`, {
+                console.log("Deleting ID:", id); // Yeh console mein check karo
+                const res = await fetch(`https://sarvam-backend-5bhj.onrender.com/api/photos/${id}`, {
                     method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: { 
+                        'Authorization': `Bearer ${token}` // Token yahan se ja raha hai
+                    }
                 });
+                
                 if (res.ok) {
+                    alert("Delete ho gayi!");
                     loadPhotos();
                 } else {
-                    alert("Delete fail ho gaya. Code check karo.");
+                    const errData = await res.json();
+                    alert("Delete fail: " + (errData.error || "Unknown error"));
                 }
             } catch (err) {
-                alert("Error deleting photo");
+                alert("Server error, console check karo");
+                console.error(err);
             }
         }
 
