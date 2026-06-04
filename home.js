@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(!slideWrapper) return;
 
         try {
-            const response = await fetch('http://localhost:5000/api/photos');
+            const response = await fetch('https://sarvam-backend-5bhj.onrender.com/api/photos');
             const data = await response.json();
             
             const photos = Array.isArray(data) ? data : data.photos; 

@@ -67,7 +67,7 @@
         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('uploadBtn');
-            const files = document.getElementById('imageFile').files; // Saari selected files
+            const files = document.getElementById('imageFile').files; 
             
             btn.innerText = `Uploading ${files.length} Photos... Please Wait`;
             btn.style.opacity = '0.7';
@@ -76,9 +76,8 @@
             const formData = new FormData();
             formData.append('category', document.getElementById('category').value);
             
-            // Loop chala kar saari photos ko form mein daal do
             for (let i = 0; i < files.length; i++) {
-                formData.append('photos', files[i]); // 'photos' naam piche backend me bhi hai
+                formData.append('photos', files[i]); 
             }
 
             try {
@@ -92,7 +91,7 @@
                     alert(`${files.length} Photos successfully studio database mein chali gayi! 🎉`);
                     document.getElementById('uploadForm').reset();
                     document.getElementById('filterCategory').value = document.getElementById('category').value;
-                    loadPhotos(); // Refresh gallery
+                    loadPhotos(); 
                 } else {
                     const data = await res.json();
                     alert(data.error || "Upload failed");
@@ -101,7 +100,6 @@
                 alert("Server error during upload. Kya backend chalu hai?");
             }
             
-            // Button wapas theek kar do
             btn.innerText = "Upload to Godown";
             btn.style.opacity = '1';
             btn.disabled = false;
@@ -124,11 +122,10 @@
                     return;
                 }
 
-                // Latest photo pehle dikhe isliye reverse() laga diya
                 photos.reverse().forEach(photo => {
                     gallery.innerHTML += `
                         <div class="img-card">
-                            <img src="https://sarvam-backend-5bhj.onrender.com/${photo.imagePath}" alt="Studio Photo">
+                            <img src="${photo.imagePath}" alt="Studio Photo">
                             <button class="btn-delete" onclick="deletePhoto('${photo._id}')">Delete Photo</button>
                         </div>
                     `;
@@ -142,11 +139,11 @@
         async function deletePhoto(id) {
             if(!confirm("Kya aap sach mein is photo ko permanently delete karna chahte hain?")) return;
             try {
-                console.log("Deleting ID:", id); // Yeh console mein check karo
+                console.log("Deleting ID:", id); 
                 const res = await fetch(`https://sarvam-backend-5bhj.onrender.com/api/photos/${id}`, {
                     method: 'DELETE',
                     headers: { 
-                        'Authorization': `Bearer ${token}` // Token yahan se ja raha hai
+                        'Authorization': `Bearer ${token}` 
                     }
                 });
                 
