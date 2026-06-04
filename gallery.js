@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadGallery() {
         const gallery = document.getElementById('gallery');
         try {
-            const response = await fetch('https://sarvam-backend-5bhj.onrender.com/api/photos');
+            const response = await fetch('https://sarvam-backend-5bhj.onrender.com/api/photos/category/${category}');
             const data = await response.json();
             const photos = Array.isArray(data) ? data : data.photos;
 
