@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Agar link hai, aur apni hi website ka hai, tabhi yeh run hoga
         if (link && link.href.startsWith(window.location.origin) && !link.href.includes('#')) {
             e.preventDefault(); // Default page reload ko rokna
+            window.location.href = link.href;
+            return;
             
             // Screen ko halka sa fade karna loading feel ke liye
             document.body.style.opacity = '0.5'; 
